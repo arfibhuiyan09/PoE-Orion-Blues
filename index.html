@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orion Blues Co. — VEX Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7f7f7;
+            color: #120d1f;
+            min-height: 100vh;
+            padding: 20px 20px 60px;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 32px 40px 40px;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #010873;
+            margin-bottom: 4px;
+        }
+
+        h2 {
+            font-size: 15px;
+            font-weight: 400;
+            color: #555;
+            margin-bottom: 28px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 24px 0;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #010873;
+            margin-bottom: 12px;
+            margin-top: 28px;
+        }
+
+        /* Project link cards */
+        .project-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .project-list li a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: #010873;
+            padding: 12px 16px;
+            border: 2px solid #010873;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: 'Times New Roman', serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .project-list li a:hover {
+            background-color: #010873;
+            color: #fff;
+        }
+
+        .project-list li a:hover .arrow { color: #fff; }
+
+        .project-label { font-size: 14px; }
+        .project-sub {
+            font-size: 12px;
+            color: #888;
+            margin-top: 2px;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .project-list li a:hover .project-sub { color: #ccd; }
+
+        .project-info { flex: 1; }
+
+        .arrow {
+            font-size: 18px;
+            color: #010873;
+            margin-left: 12px;
+        }
+
+        /* Meta tags */
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            font-size: 12px;
+            padding: 3px 10px;
+            border: 1px solid #010873;
+            border-radius: 4px;
+            color: #010873;
+            background: #f0f2ff;
+        }
+
+        .tag-green {
+            border-color: #2e7d32;
+            color: #2e7d32;
+            background: #f0f7f0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid #ddd;
+        }
+
+        footer p {
+            font-family: 'Times New Roman', serif;
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* Particles */
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: #010873;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>arfibhuiyan09.github.io/Orion Blues/..</h1>
+    <h2>Hub for all VEXcode V5 Python projects by Orion Blues Co.</h2>
+    <h2>Course: PLTW PoE //// 10th Grade //// Website establish date: 3/30/26</h2>
+
+    <div class="meta-row">
+        <span class="tag-green tag">VEX V5 Python</span>
+        <span class="tag">Orion Blues Co.</span>
+        <span class="tag">PoE Class</span>
+    </div>
+
+    <hr>
+
+    <p class="section-title">Projects</p>
+    <p style="font-family:'Times New Roman',serif; font-size:15px; color:#555; margin-bottom:16px;">
+        Click a project to view its source code, patch notes, and documentation.
+    </p>
+
+    <ul class="project-list">
+        <li>
+            <a href="Activity 2.2.2 Chain Reaction.html">
+                <div class="project-info">
+                    <div class="project-label">Activity 2.2.2 — Chain Reaction</div>
+                    <div class="project-sub">Classroom based input and output robot &nbsp;|&nbsp; v.2.3.3 &nbsp;|&nbsp; Finished 03/12/26</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+        <li>
+            <a href="Activity 2.2.4 Biomimicry.html">
+                <div class="project-info">
+                    <div class="project-label">Activity 2.2.4 — Biomimicry</div>
+                    <div class="project-sub">Color-reactive autonomous robot &nbsp;|&nbsp; v.2.1.2 &nbsp;|&nbsp; Finished 03/30/26</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+        </li>
+    </ul>
+
+    <hr>
+
+    <footer>
+        <p>Orion Blues Co. &nbsp;|&nbsp; VEXcode V5 Python Hub &nbsp;|&nbsp; arfibhuiyan09.github.io</p>
+    </footer>
+
+</div>
+
+<div class="particles-container"></div>
+
+<script>
+    const numParticles = 60;
+    for (let i = 0; i < numParticles; i++) createParticle();
+
+    function createParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        document.querySelector('.particles-container').appendChild(particle);
+
+        let posX = Math.random() * window.innerWidth;
+        let posY = Math.random() * window.innerHeight;
+        particle.style.left = posX + 'px';
+        particle.style.top = posY + 'px';
+
+        const speed = 0.5 + Math.random() * 1.5;
+        const angle = Math.random() * 360;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+
+        function update() {
+            posX += vx;
+            posY += vy;
+            if (posX < 0 || posX > window.innerWidth || posY < 0 || posY > window.innerHeight) {
+                posX = Math.random() * window.innerWidth;
+                posY = Math.random() * window.innerHeight;
+            }
+            particle.style.left = posX + 'px';
+            particle.style.top = posY + 'px';
+            requestAnimationFrame(update);
+        }
+        update();
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        document.querySelectorAll('.particle').forEach((particle) => {
+            const px = parseInt(particle.style.left);
+            const py = parseInt(particle.style.top);
+            const dx = mouseX - px;
+            const dy = mouseY - py;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 100) {
+                const angle = Math.atan2(dy, dx);
+                particle.style.left = (px - Math.cos(angle) * 15) + 'px';
+                particle.style.top = (py - Math.sin(angle) * 15) + 'px';
+            }
+        });
+    });
+</script>
+</body>
+</html>

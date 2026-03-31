@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activity 2.2.4 — Biomimicry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7f7f7;
+            color: #120d1f;
+            min-height: 100vh;
+            padding: 20px 20px 60px;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 32px 40px 40px;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #010873;
+            margin-bottom: 4px;
+        }
+
+        h2 {
+            font-size: 15px;
+            font-weight: 400;
+            color: #555;
+            margin-bottom: 28px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 24px 0;
+        }
+
+        /* Nav links */
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #010873;
+            padding: 5px 12px;
+            border: 2px solid #010873;
+            border-radius: 5px;
+            font-size: 13px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+
+        .nav-links li a:hover {
+            background-color: #010873;
+            color: #fff;
+        }
+
+        /* Section headers */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #010873;
+            margin-bottom: 12px;
+            margin-top: 28px;
+        }
+
+        /* Meta tags */
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            font-size: 12px;
+            padding: 3px 10px;
+            border: 1px solid #010873;
+            border-radius: 4px;
+            color: #010873;
+            background: #f0f2ff;
+        }
+
+        .tag-green {
+            border-color: #2e7d32;
+            color: #2e7d32;
+            background: #f0f7f0;
+        }
+
+        .tag-amber {
+            border-color: #b45309;
+            color: #b45309;
+            background: #fdf6ec;
+        }
+
+        /* Patch notes table */
+        .patches {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Times New Roman', serif;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .patches tr {
+            border-bottom: 1px solid #eee;
+        }
+
+        .patches tr:last-child { border-bottom: none; }
+
+        .patches td {
+            padding: 8px 10px;
+            vertical-align: top;
+            color: #010873;
+        }
+
+        .patches td:first-child {
+            white-space: nowrap;
+            font-weight: 700;
+            width: 110px;
+            color: #010873;
+        }
+
+        .patches tr.latest td {
+            color: #b45309;
+        }
+
+        .patches tr.latest td:first-child {
+            color: #b45309;
+        }
+
+        /* RIP box */
+        .rip-box {
+            background: #fffbea;
+            border: 1px solid #d4a017;
+            border-left: 4px solid #d4a017;
+            border-radius: 4px;
+            padding: 12px 16px;
+            font-family: 'Times New Roman', serif;
+            font-size: 15px;
+            color: #7a5c00;
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .rip-box strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        /* Code block */
+        .code-header {
+            background: #272720;
+            padding: 9px 16px;
+            border-radius: 6px 6px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 28px;
+        }
+
+        .code-filename {
+            font-size: 12px;
+            color: #aaa;
+            font-family: monospace;
+        }
+
+        .code-filename span { color: #7ab87a; }
+
+        .copy-btn {
+            font-size: 12px;
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #555;
+            padding: 3px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .copy-btn:hover { color: #7ab87a; border-color: #7ab87a; }
+        .copy-btn.copied { color: #d4a017; border-color: #d4a017; }
+
+        .hljs {
+            border-radius: 0 0 6px 6px !important;
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+            padding: 20px !important;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid #ddd;
+        }
+
+        footer p {
+            font-family: 'Times New Roman', serif;
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* Particles */
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: #010873;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Activity 2.2.4 — Biomimicry</h1>
+    <h2>PoE VEXcode V5 Python &nbsp;|&nbsp; Orion Blues Co. &nbsp;|&nbsp; Finished 03/30/26</h2>
+
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#patches">Patch Notes</a></li>
+        <li><a href="#rip">Memorial</a></li>
+        <li><a href="#code">Source Code</a></li>
+    </ul>
+
+    <hr>
+
+    <div id="about">
+        <p class="section-title">About</p>
+        <p style="font-family:'Times New Roman',serif; font-size:16px; color:#010873; line-height:1.7; margin-bottom:16px;">
+            A color-reactive autonomous robot that replicates turtle behavior using a VEX V5 optical sensor. 
+            The robot detects colors on the ground and responds differently to each one — speeding up on black, 
+            spinning on red, retreating from blue, and more.
+        </p>
+        <div class="meta-row">
+            <span class="tag-green tag">Optical Sensor</span>
+            <span class="tag-green tag">VEX V5 Python</span>
+            <span class="tag-amber tag">v.2.1.2 — Final</span>
+            <span class="tag">Author: Azizur B.</span>
+            <span class="tag">Created: 03/24/26</span>
+            <span class="tag">Finished: 03/30/26</span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div id="patches">
+        <p class="section-title">Patch Notes</p>
+        <table class="patches">
+            <tr><td>v.1.0.0</td><td>Release — while-true loop + color sensor + drivetrain react to black</td></tr>
+            <tr><td>v.1.1.0</td><td>Added bumper-triggered reverse function + brain screen text</td></tr>
+            <tr><td>v.1.1.1</td><td>Brain screen tweaks</td></tr>
+            <tr><td>v.1.1.2</td><td>Reworked color sensor logic + improved brain screen layout</td></tr>
+            <tr><td>v.1.2.0</td><td>Full color spectrum — detected color now renders on brain screen</td></tr>
+            <tr><td>v.2.0.0</td><td>Full code revamp — default 30% speed, black triggers 85% burst</td></tr>
+            <tr><td>v.2.1.0</td><td>Added turtlesickomode, turtlenolikebluemode, and turtlelikesredmode</td></tr>
+            <tr><td>v.2.1.1</td><td>Fixed a large number of bugs causing code to contradict itself and not run</td></tr>
+            <tr class="latest"><td>v.2.1.2 ★</td><td><strong>Final version.</strong> Fine-tuned black detection values, fixed remaining bugs. Also: forgot to plug the robot in.</td></tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <div id="rip">
+        <p class="section-title">Memorial</p>
+        <div class="rip-box">
+            <strong>🕊 RIP Zachery — 03/23/26</strong>
+            do NOT use code zackydadddyy in the fn item shop<br>
+            In memory of Zachery Macarthur who lives on 1005 N Doris St, Kissimmee FL, 34741
+        </div>
+    </div>
+
+    <hr>
+
+    <div id="code">
+        <p class="section-title">Source Code</p>
+        <div class="code-header">
+            <span class="code-filename"><span>activity_2_2_4_biomimicry</span>.py</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+<pre><code class="language-python"># ==============================================================================
+# PROJECT:     Activity 2.2.4 - Biomimicry 
+# AUTHOR:      Azizur B.
+# CREATED:     03/24/2026 (FINISHED: 03/30/26)
+# VERSION:     v.2.1.2
+# DESCRIPTION: experimentation with the optical sensor //// replicating turtle behaviour to color, especially black. 
+# ==============================================================================
+# PATCH NOTES:
+# v.1.0.0 (03/24/26): release //// added a while-true loop and incorporated the color sensor
+# and drive train to work together if the sensor sees black
+
+# v.1.1.0 (03/25/26): added a function to make the turtle move back when
+# contact with a wall or object is detected. added text on brain 
+
+# v.1.1.1 (03/26/26 9:03AM): made some tweaks to stuff with the brain screen
+
+# v.1.1.2 (03/26/26 12:26PM): changed the logic of the color sensor and changed
+# the code of the brain screen to look "better"
+
+# v.1.2.0 (03/27/26 9:33AM): added a color spectrum so if the sensor sees a specific color
+# it will display that color on the brain screen
+
+# v.2.0.0 (03/27/26 10:43AM): revamped the entire code and optimised it to functionally
+# run better, made the default speed 30% and made it when it sees black, it goes to 85% speed
+
+# v.2.1.0 (03/27/26 11:15AM): added 3 functions; turtlesickomode, turtlenolikebluemode,
+# and turtlelikeredmode.
+
+# v.2.1.1 (03/27/26 6:30PM): fixed a TON of bugs that made the code contradict itself and not work. 
+
+# v.2.1.2 (LATEST FUNCTIONAL CODE) (03/29/26 9:51AM): im slow and forgot to plug the robot in,
+# thats why it didnt work. fine tuned black detection values, fixed all remaining bugs.
+# ==============================================================================
+
+def draw_ui():
+    brain.screen.clear_screen()
+    brain.screen.set_cursor(1, 1)
+    brain.screen.set_font(FontType.MONO20)
+    brain.screen.set_pen_color(Color.RED)
+    brain.screen.print("PoE Activity 2.2.4 /// Biomimicry")
+    brain.screen.set_cursor(2, 1)
+    brain.screen.set_pen_color(Color.WHITE)
+    brain.screen.print("Made by Orion Blues Co.")
+    brain.screen.set_cursor(4, 1)
+    brain.screen.set_font(FontType.MONO15)
+    brain.screen.set_pen_color(Color.YELLOW)
+    brain.screen.print("RIP Zachery 03/23/26")
+    brain.screen.set_cursor(5, 1)
+    brain.screen.print("do NOT use code zackydadddyy in fn item shop")
+    brain.screen.set_cursor(6, 1)
+    brain.screen.print("In memory of Zachery Macarthur who lives on")
+    brain.screen.set_cursor(7, 1)
+    brain.screen.print("1005 N Doris St, Kissimmee FL, 34741")
+    brain.screen.set_cursor(12, 1)
+    brain.screen.set_font(FontType.MONO12)
+    brain.screen.set_pen_color(Color.WHITE)
+    brain.screen.print("v.2.1.2 (Updated 03/30/26 9:51AM)")
+
+draw_ui()
+
+colorsensor.set_light_power(100, PERCENT)
+colorsensor.set_light(True)
+
+def turtlegobackdeluxe():
+    if not is_backing_up:
+        drivetrain.set_drive_velocity(40, PERCENT)
+        drivetrain.drive(FORWARD)
+        wait(2000, MSEC)
+        drivetrain.stop()
+        wait(1000, MSEC)
+        drivetrain.turn_for(RIGHT, 90, DEGREES)
+        drivetrain.set_drive_velocity(30, PERCENT)
+        drivetrain.drive(REVERSE)
+
+def turtlesickomode():
+    drivetrain.set_drive_velocity(50, PERCENT)
+    drivetrain.drive(REVERSE)
+
+def turtlelikesredmode():
+    drivetrain.stop()
+    drivetrain.set_turn_velocity(30, PERCENT)
+    drivetrain.turn_for(LEFT, 360, DEGREES)
+    drivetrain.turn_for(RIGHT, 360, DEGREES)
+    drivetrain.turn_for(RIGHT, 90, DEGREES)
+    drivetrain.set_drive_velocity(30, PERCENT)
+    drivetrain.drive(FORWARD)
+
+def turtlenolikebluemode():
+    drivetrain.set_drive_velocity(10, PERCENT)
+    drivetrain.drive_for(FORWARD, 100, MM)
+    drivetrain.turn_for(RIGHT, 180, DEGREES)
+    drivetrain.set_drive_velocity(30, PERCENT)
+    drivetrain.drive(FORWARD)
+
+def normal():
+    drivetrain.set_drive_velocity(10, PERCENT)
+    drivetrain.drive(FORWARD)
+
+is_backing_up = False
+def turtlegoback():
+    global is_backing_up
+    is_backing_up = True
+    drivetrain.stop()
+    drivetrain.drive_for(REVERSE, 100, MM)
+    is_backing_up = False
+Zacherysucks.pressed(turtlegoback)
+
+current_state = ""
+drivetrain.set_drive_velocity(10, PERCENT)
+
+while True:
+    if is_backing_up:
+        wait(50, MSEC)
+        continue
+
+    current_hue = colorsensor.hue()
+    brightness = colorsensor.brightness()
+
+    if brightness < 1:
+        color, msg, action = Color.WHITE, "Black Detected :D ", turtlesickomode
+    elif current_hue >= 340 or current_hue <= 20:
+        color, msg, action = Color.RED, "Red Detected   ", turtlelikesredmode
+    elif 20 < current_hue <= 40:
+        color, msg, action = Color.ORANGE, "Orange Detected", normal
+    elif 40 < current_hue <= 60:
+        color, msg, action = Color.YELLOW, "Yellow Detected", turtlegobackdeluxe
+    elif 60 < current_hue <= 140:
+        color, msg, action = Color.GREEN, "Green Detected ", normal
+    elif 140 < current_hue <= 250:
+        color, msg, action = Color.BLUE, "Blue Detected  ", turtlenolikebluemode
+    else:
+        drivetrain.set_drive_velocity(10, PERCENT)
+        color, msg, action = Color.WHITE, "Searching...   ", normal
+
+    if msg != current_state:
+        action()
+        current_state = msg
+
+    brain.screen.set_cursor(15, 1)
+    brain.screen.set_pen_color(color)
+    brain.screen.print("STATUS: " + msg + "      ")
+    brain.screen.set_cursor(16, 1)
+    brain.screen.set_pen_color(Color.CYAN)
+    brain.screen.print("Hue: " + str(current_hue) + "    ")
+    brain.screen.set_cursor(17, 1)
+    brain.screen.print("Bright: " + str(brightness) + "%    ")
+
+    wait(50, MSEC)
+
+# Finished March 30, 2026 by Orion Blues™ (Azizur, Orion, and Arthur)</code></pre>
+    </div>
+
+    <footer>
+        <p>Orion Blues Co. &nbsp;|&nbsp; PoE Activity 2.2.4 — Biomimicry &nbsp;|&nbsp; Finished March 30, 2026</p>
+    </footer>
+
+</div>
+
+<div class="particles-container"></div>
+
+<script>
+    hljs.highlightAll();
+
+    function copyCode(btn) {
+        const code = document.querySelector('code').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+    }
+
+    // Particles
+    const numParticles = 60;
+    for (let i = 0; i < numParticles; i++) createParticle();
+
+    function createParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        document.querySelector('.particles-container').appendChild(particle);
+
+        let posX = Math.random() * window.innerWidth;
+        let posY = Math.random() * window.innerHeight;
+        particle.style.left = posX + 'px';
+        particle.style.top = posY + 'px';
+
+        const speed = 0.5 + Math.random() * 1.5;
+        const angle = Math.random() * 360;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+
+        function update() {
+            posX += vx;
+            posY += vy;
+            if (posX < 0 || posX > window.innerWidth || posY < 0 || posY > window.innerHeight) {
+                posX = Math.random() * window.innerWidth;
+                posY = Math.random() * window.innerHeight;
+            }
+            particle.style.left = posX + 'px';
+            particle.style.top = posY + 'px';
+            requestAnimationFrame(update);
+        }
+        update();
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        document.querySelectorAll('.particle').forEach((particle) => {
+            const px = parseInt(particle.style.left);
+            const py = parseInt(particle.style.top);
+            const dx = mouseX - px;
+            const dy = mouseY - py;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 100) {
+                const angle = Math.atan2(dy, dx);
+                particle.style.left = (px - Math.cos(angle) * 15) + 'px';
+                particle.style.top = (py - Math.sin(angle) * 15) + 'px';
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activity 2.2.2 — Chain Reaction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7f7f7;
+            color: #120d1f;
+            min-height: 100vh;
+            padding: 20px 20px 60px;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 32px 40px 40px;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #010873;
+            margin-bottom: 4px;
+        }
+
+        h2 {
+            font-size: 15px;
+            font-weight: 400;
+            color: #555;
+            margin-bottom: 28px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 24px 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #010873;
+            padding: 5px 12px;
+            border: 2px solid #010873;
+            border-radius: 5px;
+            font-size: 13px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+
+        .nav-links li a:hover {
+            background-color: #010873;
+            color: #fff;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #010873;
+            margin-bottom: 12px;
+            margin-top: 28px;
+        }
+
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            font-size: 12px;
+            padding: 3px 10px;
+            border: 1px solid #010873;
+            border-radius: 4px;
+            color: #010873;
+            background: #f0f2ff;
+        }
+
+        .tag-green {
+            border-color: #2e7d32;
+            color: #2e7d32;
+            background: #f0f7f0;
+        }
+
+        .tag-amber {
+            border-color: #b45309;
+            color: #b45309;
+            background: #fdf6ec;
+        }
+
+        /* Patch notes */
+        .patches {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Times New Roman', serif;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .patches tr { border-bottom: 1px solid #eee; }
+        .patches tr:last-child { border-bottom: none; }
+
+        .patches td {
+            padding: 8px 10px;
+            vertical-align: top;
+            color: #010873;
+        }
+
+        .patches td:first-child {
+            white-space: nowrap;
+            font-weight: 700;
+            width: 160px;
+        }
+
+        .patches tr.latest td { color: #b45309; }
+        .patches tr.latest td:first-child { color: #b45309; }
+
+        /* Code block */
+        .code-header {
+            background: #272720;
+            padding: 9px 16px;
+            border-radius: 6px 6px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 28px;
+        }
+
+        .code-filename { font-size: 12px; color: #aaa; font-family: monospace; }
+        .code-filename span { color: #7ab87a; }
+
+        .copy-btn {
+            font-size: 12px;
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #555;
+            padding: 3px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .copy-btn:hover { color: #7ab87a; border-color: #7ab87a; }
+        .copy-btn.copied { color: #d4a017; border-color: #d4a017; }
+
+        .hljs {
+            border-radius: 0 0 6px 6px !important;
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+            padding: 20px !important;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid #ddd;
+        }
+
+        footer p {
+            font-family: 'Times New Roman', serif;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: #010873;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Activity 2.2.2 — Chain Reaction</h1>
+    <h2>PoE VEXcode V5 Python &nbsp;|&nbsp; Orion Blues Co. &nbsp;|&nbsp; Updated 03/10/26</h2>
+
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#patches">Patch Notes</a></li>
+        <li><a href="#code">Source Code</a></li>
+        <li><a href="index.html">← Back to Hub</a></li>
+    </ul>
+
+    <hr>
+
+    <div id="about">
+        <p class="section-title">About</p>
+        <p style="font-family:'Times New Roman',serif; font-size:16px; color:#010873; line-height:1.7; margin-bottom:16px;">
+            A motor control program using a potentiometer and a bumper switch. The motor only runs when the 
+            potentiometer tilt exceeds 45% — and stops permanently when the bumper is pressed, 
+            acting as an emergency shutoff. A live tilt percentage is displayed on the brain screen.
+        </p>
+        <div class="meta-row">
+            <span class="tag-green tag">Potentiometer</span>
+            <span class="tag-green tag">Bumper Switch</span>
+            <span class="tag-green tag">Motor Control</span>
+            <span class="tag-green tag">VEX V5 Python</span>
+            <span class="tag-amber tag">v.2.3.4 — Latest</span>
+            <span class="tag">Author: Azizur B.</span>
+            <span class="tag">Created: 03/01/26</span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div id="patches">
+        <p class="section-title">Patch Notes</p>
+        <table class="patches">
+            <tr><td>v.2.3.0 &nbsp;03/09/26</td><td>Added dynamic gradient RGB script for promo text (experimental) + patch log</td></tr>
+            <tr><td>v.2.3.1 &nbsp;03/09/26</td><td>Changed stylization of the intro box</td></tr>
+            <tr><td>v.2.3.2 &nbsp;03/09/26</td><td>Removed gradient RGB — more complex than expected to compile</td></tr>
+            <tr><td>v.2.3.3 &nbsp;03/09/26</td><td>Added subtexts to print on the brain display</td></tr>
+            <tr class="latest"><td>v.2.3.4 ★ &nbsp;03/10/26</td><td><strong>Fixed motor direction, updated potentiometer logic, added live potentiometer angle feed to brain screen in degrees (converted to percent).</strong></td></tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <div id="code">
+        <p class="section-title">Source Code</p>
+        <div class="code-header">
+            <span class="code-filename"><span>activity_2_2_2_chain_reaction</span>.py</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+<pre><code class="language-python">#region VEXcode Generated Robot Configuration
+from vex import *
+import urandom
+import math
+
+# Brain should be defined by default
+brain=Brain()
+
+# Robot configuration code
+motor_5 = Motor(Ports.PORT5, GearSetting.RATIO_18_1, False)
+bumper_b = Bumper(brain.three_wire_port.b)
+potentiometer_a = Potentiometer(brain.three_wire_port.a)
+
+# wait for rotation sensor to fully initialize
+wait(30, MSEC)
+
+# Make random actually random
+def initializeRandomSeed():
+    wait(100, MSEC)
+    random = brain.battery.voltage(MV) + brain.battery.current(CurrentUnits.AMP) * 100 + brain.timer.system_high_res()
+    urandom.seed(int(random))
+
+# Set random seed 
+initializeRandomSeed()
+
+def play_vexcode_sound(sound_name):
+    print("VEXPlaySound:" + sound_name)
+    wait(5, MSEC)
+
+wait(200, MSEC)
+print("\033[2J")
+
+#endregion VEXcode Generated Robot Configuration
+
+
+# ==============================================================================
+# PROJECT:     Activity 2.2.2 - Chain Reaction
+# AUTHOR:      Azizur B.
+# CREATED:     03/01/2026
+# VERSION:     v.2.3.4
+# DESCRIPTION: Potentiometer and Bumper logic for Activity 2.2.2
+# ==============================================================================
+# PATCH NOTES:
+# (03/09/26 10:20AM): v.2.3.0 - added dynamic gradient RGB script for promo text (experimental)
+#                               and added a patch log.
+# (03/09/26 10:37AM): v.2.3.1 - changed the stylization of the intro box.
+# (03/09/26 3:16PM):  v.2.3.2 - removed the gradient RGB due to it being more complex
+#                               than expected to compile.
+# (03/09/26 3:26PM):  v.2.3.3 - added subtexts to print in the brain display
+# (03/10/26 9:08AM):  v.2.3.4 - fixed motor direction, made changes to potentiometer,
+#                               added a live feed of the potentiometer angle to the brain
+#                               screen in degrees (changed the degrees and turned it into
+#                               percent for the potentiometer angle.)
+# ==============================================================================
+
+from vex import *
+
+brain.screen.set_cursor(3, 2)
+brain.screen.set_font(FontType.MONO20)
+brain.screen.set_pen_color(Color.WHITE)
+brain.screen.print("Made by Orion Blues Co.")
+brain.screen.next_row()
+brain.screen.next_row()
+brain.screen.next_row()
+brain.screen.next_row()
+brain.screen.next_row()
+brain.screen.next_row()
+brain.screen.next_row()
+brain.screen.next_row()
+brain.screen.set_font(FontType.MONO20)
+brain.screen.set_pen_color(Color.WHITE)
+brain.screen.print("v.2.3.4 (Last Updated 03/10/26 9:33AM)")
+
+is_enabled = True
+
+# function to stop the motor indefinitely
+def motor_stop():
+    global is_enabled
+    is_enabled = False  # stop
+    motor_5.stop()
+
+# bumper code outside loop so it doesnt tweak
+bumper_b.pressed(motor_stop)
+
+# the while true loop
+while True:
+    # live feed of potentiometer percentage
+    brain.screen.set_cursor(1, 1)
+    brain.screen.set_font(FontType.MONO20)
+    brain.screen.set_pen_color(Color.YELLOW)
+    brain.screen.print("Percent Tilt: ", potentiometer_a.angle(PERCENT), " %   ")
+
+    # only run the motor if the potentiometer is > 45 AND the bumper hasn't been hit
+    if is_enabled and potentiometer_a.angle(PERCENT) > 45:
+        motor_5.spin(FORWARD, 25, PERCENT)
+    else:
+        # stops the motor if the potentiometer is low OR if is_enabled is False
+        motor_5.stop()</code></pre>
+    </div>
+
+    <footer>
+        <p>Orion Blues Co. &nbsp;|&nbsp; PoE Activity 2.2.2 — Chain Reaction &nbsp;|&nbsp; Updated 03/10/26</p>
+    </footer>
+
+</div>
+
+<div class="particles-container"></div>
+
+<script>
+    hljs.highlightAll();
+
+    function copyCode(btn) {
+        const code = document.querySelector('code').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+    }
+
+    const numParticles = 60;
+    for (let i = 0; i < numParticles; i++) createParticle();
+
+    function createParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        document.querySelector('.particles-container').appendChild(particle);
+
+        let posX = Math.random() * window.innerWidth;
+        let posY = Math.random() * window.innerHeight;
+        particle.style.left = posX + 'px';
+        particle.style.top = posY + 'px';
+
+        const speed = 0.5 + Math.random() * 1.5;
+        const angle = Math.random() * 360;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+
+        function update() {
+            posX += vx;
+            posY += vy;
+            if (posX < 0 || posX > window.innerWidth || posY < 0 || posY > window.innerHeight) {
+                posX = Math.random() * window.innerWidth;
+                posY = Math.random() * window.innerHeight;
+            }
+            particle.style.left = posX + 'px';
+            particle.style.top = posY + 'px';
+            requestAnimationFrame(update);
+        }
+        update();
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        document.querySelectorAll('.particle').forEach((particle) => {
+            const px = parseInt(particle.style.left);
+            const py = parseInt(particle.style.top);
+            const dx = mouseX - px;
+            const dy = mouseY - py;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 100) {
+                const angle = Math.atan2(dy, dx);
+                particle.style.left = (px - Math.cos(angle) * 15) + 'px';
+                particle.style.top = (py - Math.sin(angle) * 15) + 'px';
+            }
+        });
+    });
+</script>
+</body>
+</html>
