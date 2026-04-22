@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Problem 2.4.1 — Robotic Symphony</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7f7f7;
+            color: #120d1f;
+            min-height: 100vh;
+            padding: 20px 20px 60px;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 32px 40px 40px;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #010873;
+            margin-bottom: 4px;
+        }
+
+        h2 {
+            font-size: 15px;
+            font-weight: 400;
+            color: #555;
+            margin-bottom: 28px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 24px 0;
+        }
+
+        /* Nav links */
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #010873;
+            padding: 5px 12px;
+            border: 2px solid #010873;
+            border-radius: 5px;
+            font-size: 13px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+
+        .nav-links li a:hover {
+            background-color: #010873;
+            color: #fff;
+        }
+
+        /* Section headers */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #010873;
+            margin-bottom: 12px;
+            margin-top: 28px;
+        }
+
+        /* Meta tags */
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            font-size: 12px;
+            padding: 3px 10px;
+            border: 1px solid #010873;
+            border-radius: 4px;
+            color: #010873;
+            background: #f0f2ff;
+        }
+
+        .tag-green {
+            border-color: #2e7d32;
+            color: #2e7d32;
+            background: #f0f7f0;
+        }
+
+        .tag-amber {
+            border-color: #b45309;
+            color: #b45309;
+            background: #fdf6ec;
+        }
+
+        /* Patch notes table */
+        .patches {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Times New Roman', serif;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .patches tr {
+            border-bottom: 1px solid #eee;
+        }
+
+        .patches tr:last-child { border-bottom: none; }
+
+        .patches td {
+            padding: 8px 10px;
+            vertical-align: top;
+            color: #010873;
+        }
+
+        .patches td:first-child {
+            white-space: nowrap;
+            font-weight: 700;
+            width: 110px;
+            color: #010873;
+        }
+
+        .patches tr.latest td {
+            color: #b45309;
+        }
+
+        .patches tr.latest td:first-child {
+            color: #b45309;
+        }
+
+        /* Beat diagram card */
+        .beat-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            background: #fafafa;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .beat-card-title {
+            font-size: 13px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        .beat-grid {
+            display: grid;
+            grid-template-columns: 90px repeat(4, 1fr);
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .beat-number {
+            font-size: 12px;
+            color: #aaa;
+            text-align: center;
+        }
+
+        .beat-label {
+            font-size: 13px;
+            color: #010873;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .beat-cell {
+            height: 44px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 11px;
+            color: #bbb;
+            background: #fff;
+            transition: all 0.15s;
+        }
+
+        .beat-cell.active-kick {
+            background: #fff4f0;
+            border-color: #c0392b;
+            color: #c0392b;
+            font-weight: 700;
+        }
+
+        .beat-cell.active-snare {
+            background: #f0f2ff;
+            border-color: #010873;
+            color: #010873;
+            font-weight: 700;
+        }
+
+        .beat-cell.pulse {
+            animation: beatPulse 0.12s ease-out;
+        }
+
+        @keyframes beatPulse {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(0.91); }
+            100% { transform: scale(1); }
+        }
+
+        .tempo-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .tempo-row span { color: #010873; font-weight: 700; }
+
+        /* Play button — matches nav-links style */
+        .play-btn {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 13px;
+            background: transparent;
+            color: #010873;
+            border: 2px solid #010873;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .play-btn:hover,
+        .play-btn.playing {
+            background-color: #010873;
+            color: #fff;
+        }
+
+        /* Code block */
+        .code-header {
+            background: #272720;
+            padding: 9px 16px;
+            border-radius: 6px 6px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 28px;
+        }
+
+        .code-filename {
+            font-size: 12px;
+            color: #aaa;
+            font-family: monospace;
+        }
+
+        .code-filename span { color: #7ab87a; }
+
+        .copy-btn {
+            font-size: 12px;
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #555;
+            padding: 3px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .copy-btn:hover { color: #7ab87a; border-color: #7ab87a; }
+        .copy-btn.copied { color: #d4a017; border-color: #d4a017; }
+
+        .hljs {
+            border-radius: 0 0 6px 6px !important;
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+            padding: 20px !important;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid #ddd;
+        }
+
+        footer p {
+            font-family: 'Times New Roman', serif;
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* Particles */
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: #010873;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Problem 2.4.1 — Robotic Symphony</h1>
+    <h2>PoE VEXcode V5 Python &nbsp;|&nbsp; Orion Blues Co. &nbsp;|&nbsp; Started 04/07/26</h2>
+
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#patches">Patch Notes</a></li>
+        <li><a href="#code">Source Code</a></li>
+    </ul>
+
+    <hr>
+
+    <div id="about">
+        <p class="section-title">About</p>
+        <p style="font-family:'Times New Roman',serif; font-size:16px; color:#010873; line-height:1.7; margin-bottom:16px;">
+            A VEX V5 robot programmed to physically strike a snare drum and kick drum in 4/4 time at 120 BPM —
+            replicating a kick-snare-kick-snare pattern from <em>Twinkle Twinkle Little Star</em>.
+            In v.1.3.0, an optical sensor controls playback: light present = drums play, darkness = drums stop.
+        </p>
+        <div class="meta-row">
+            <span class="tag tag-green">Optical Sensor</span>
+            <span class="tag tag-green">VEX V5 Python</span>
+            <span class="tag tag-amber">v.1.3.0 — Latest</span>
+            <span class="tag">Author: Azizur B.</span>
+            <span class="tag">Created: 04/07/26</span>
+            <span class="tag">Finished: 04/22/26</span>
+            <span class="tag">120 BPM · 4/4 Time</span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div id="how-it-works">
+        <p class="section-title">How It Works</p>
+
+        <div class="beat-card">
+            <div class="beat-card-title">4/4 Rhythm Pattern — click play to simulate</div>
+            <div class="beat-grid">
+                <div class="beat-number"></div>
+                <div class="beat-number">Beat 1</div>
+                <div class="beat-number">Beat 2</div>
+                <div class="beat-number">Beat 3</div>
+                <div class="beat-number">Beat 4</div>
+
+                <div class="beat-label">Kick (M10)</div>
+                <div class="beat-cell active-kick" id="k1">HIT</div>
+                <div class="beat-cell" id="k2">—</div>
+                <div class="beat-cell active-kick" id="k3">HIT</div>
+                <div class="beat-cell" id="k4">—</div>
+
+                <div class="beat-label">Snare (M1)</div>
+                <div class="beat-cell" id="s1">—</div>
+                <div class="beat-cell active-snare" id="s2">HIT</div>
+                <div class="beat-cell" id="s3">—</div>
+                <div class="beat-cell active-snare" id="s4">HIT</div>
+            </div>
+            <div class="tempo-row">
+                <div>BPM: <span>120</span></div>
+                <div>Tempo: <span>500ms / beat</span></div>
+                <div>Spin: <span>90° FORWARD → REVERSE</span></div>
+                <div>Torque: <span>100%</span></div>
+            </div>
+        </div>
+
+        <button class="play-btn" id="playBtn" onclick="togglePlay()">▶ Play Beat</button>
+
+    </div>
+
+    <hr>
+
+    <div id="patches">
+        <p class="section-title">Patch Notes</p>
+        <table class="patches">
+            <tr><td>v.1.0.0</td><td>Release — toggle switch for motors + rhythmic pattern using motors and wait command</td></tr>
+            <tr><td>v.1.1.0</td><td>Removed motor_2 (redundant) and changed toggle switch logic</td></tr>
+            <tr><td>v.1.1.1</td><td>QoL — finetuned motor turning for continuous snare strikes without hitting out-of-bounds. Set velocity to 100% for volume.</td></tr>
+            <tr><td>v.1.2.0</td><td>Re-added second motor (motor_10) for kick drum with functional code</td></tr>
+            <tr><td>v.1.2.1</td><td>Fixed partially broken code + additional QoL updates</td></tr>
+            <tr><td>v.1.2.2</td><td>Changed wait() to 250ms (half of 500ms) to better align motor timing against a metronome</td></tr>
+            <tr class="latest"><td>v.1.3.0 ★</td><td><strong>Current.</strong> Replaced bumper sensor with optical sensor — absence of light stops playback, presence of light continues it.</td></tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <div id="code">
+        <p class="section-title">Source Code</p>
+        <div class="code-header">
+            <span class="code-filename"><span>problem_2_4_1_symphony</span>.py</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+<pre><code class="language-python">#region VEXcode Generated Robot Configuration
+from vex import *
+import urandom
+import math
+
+# Brain should be defined by default
+brain=Brain()
+
+# Robot configuration code
+motor_1 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
+motor_10 = Motor(Ports.PORT10, GearSetting.RATIO_6_1, False)
+sensor = Optical(Ports.PORT2)
+
+# wait for rotation sensor to fully initialize
+wait(30, MSEC)
+
+# Make random actually random
+def initializeRandomSeed():
+    wait(100, MSEC)
+    random = brain.battery.voltage(MV) + brain.battery.current(CurrentUnits.AMP) * 100 + brain.timer.system_high_res()
+    urandom.seed(int(random))
+
+# Set random seed
+initializeRandomSeed()
+
+# add a small delay to make sure we don't print in the middle of the REPL header
+wait(200, MSEC)
+# clear the console to make sure we don't have the REPL in the console
+print("\033[2J")
+
+#endregion VEXcode Generated Robot Configuration
+
+# ==============================================================================
+# PROJECT:     Problem 2.4.1: Music Symphony
+# AUTHOR:      Azizur B.
+# CREATED:     04/07/2026
+# VERSION:     v.1.3.0
+# DESCRIPTION: attempting to play twinkle twinkle little star by programming a robot to "play" a snare drum in 4/4 time, 120BPM
+# ==============================================================================
+# PATCH NOTES:
+# v.1.0.0 (04/07/26): release //// made a toggle switch for the motors and made a rhythmic pattern using the motors and a wait command
+# v.1.1.0 (04/07/26): removed motor_2 due it being redundent and changed the toggle switch logic
+# v.1.1.1 (04/08/26): QoL updates like finetuning the turning of the motor so it continously hits the snare and not reach out of bounds after several continuous strikes.
+# and setting the velocity of the motor to 100% to increase volume.
+# v.1.2.0 (04/09/26): readded a second motor (motor_10) to accommodate a kick "drum" and added code to make it functional.
+# v.1.2.1 (04/13/26): fixed partially broken code, and added more QoL updates.
+# v.1.2.2 (04/14/26): made changes in the while true loop like changing the wait() to half (250ms) instead of 500ms to time the motors better against a metronome.
+# v.1.3.0 (04/22/26): replaced the bumper code for a optical sensor so when there is an absense of light, it stops. else it continues.
+# ==============================================================================
+
+def draw_ui():
+    brain.screen.clear_screen()
+    brain.screen.set_cursor(1, 1)
+    brain.screen.set_font(FontType.MONO20)
+    brain.screen.set_pen_color(Color.RED)
+    brain.screen.print("PoE Problem 2.4.1 /// Robotic Symphony")
+    brain.screen.set_cursor(2, 1)
+    brain.screen.set_pen_color(Color.WHITE)
+    brain.screen.print("Made by Orion Blues Co.")
+    brain.screen.set_cursor(4, 1)
+    brain.screen.set_font(FontType.MONO20)
+    brain.screen.set_pen_color(Color.YELLOW)
+    brain.screen.print("Thank you to @yesyesyesd1 and @kinginorange")
+    brain.screen.set_cursor(5, 1)
+    brain.screen.print("on youtube for sponsoring this project!")
+    brain.screen.set_pen_color(Color.WHITE)
+    brain.screen.set_cursor(10,1)
+    brain.screen.print("the Orion Drum Mechanism /// 4/4, 120 BPM.")
+    brain.screen.set_cursor(12, 1)
+    brain.screen.set_font(FontType.MONO20)
+    brain.screen.print("v.1.3.0 (Updated 04/22/26)")
+
+draw_ui()
+
+# Optical sensor setup
+sensor.set_light(LedStateType.ON)
+
+# Toggle state
+motor_on = False
+
+def toggle_motor():
+    global motor_on
+    motor_on = not motor_on
+    if not motor_on:
+        motor_1.stop()
+        motor_10.stop()
+
+# Set motor speed and torque to 100% for max volume
+motor_1.set_velocity(100, PERCENT)
+motor_10.set_velocity(100, PERCENT)
+motor_1.set_max_torque(100, PERCENT)
+motor_10.set_max_torque(100, PERCENT)
+
+# 120BPM = 500ms per beat
+tempo = 500  # msec
+
+# Main loop
+while True:
+    brightness = sensor.brightness()  # Read sensor every loop (0-100)
+
+    # Light present = play, darkness = stop
+    if brightness > 10:
+        motor_on = True
+    else:
+        motor_on = False
+
+    if motor_on:
+        # 4/4 Rhythm Loop: kick-snare-kick-snare
+
+        # Beat 1: kick hit
+        motor_10.spin_for(FORWARD, 90, DEGREES, wait=False)  # Strike immediately
+        wait(tempo / 2, MSEC)                                # Wait half a beat
+        motor_10.spin_for(REVERSE, 90, DEGREES, wait=True)   # Reset and wait for finish
+        wait(tempo / 2, MSEC)                                # Wait the rest of the beat
+
+        # Beat 2: snare hit
+        motor_1.spin_for(FORWARD, 90, DEGREES, wait=False)
+        wait(tempo / 2, MSEC)
+        motor_1.spin_for(REVERSE, 90, DEGREES, wait=True)
+        wait(tempo / 2, MSEC)
+
+        # Beat 3: kick hit
+        motor_10.spin_for(FORWARD, 90, DEGREES, wait=False)
+        wait(tempo / 2, MSEC)
+        motor_10.spin_for(REVERSE, 90, DEGREES, wait=True)
+        wait(tempo / 2, MSEC)
+
+        # Beat 4: snare hit
+        motor_1.spin_for(FORWARD, 90, DEGREES, wait=False)
+        wait(tempo / 2, MSEC)
+        motor_1.spin_for(REVERSE, 90, DEGREES, wait=True)
+        wait(tempo / 2, MSEC)
+
+    else:
+        motor_1.stop()
+        motor_10.stop()
+        wait(50, MSEC)</code></pre>
+    </div>
+
+    <footer>
+        <p>Orion Blues Co. &nbsp;|&nbsp; PoE Problem 2.4.1 — Robotic Symphony &nbsp;|&nbsp; Started April 7, 2026</p>
+    </footer>
+
+</div>
+
+<div class="particles-container"></div>
+
+<script>
+    hljs.highlightAll();
+
+    function copyCode(btn) {
+        const code = document.querySelector('code').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+    }
+
+    // Particles
+    const numParticles = 60;
+    for (let i = 0; i < numParticles; i++) createParticle();
+
+    function createParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        document.querySelector('.particles-container').appendChild(particle);
+
+        let posX = Math.random() * window.innerWidth;
+        let posY = Math.random() * window.innerHeight;
+        particle.style.left = posX + 'px';
+        particle.style.top = posY + 'px';
+
+        const speed = 0.5 + Math.random() * 1.5;
+        const angle = Math.random() * 360;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+
+        function update() {
+            posX += vx;
+            posY += vy;
+            if (posX < 0 || posX > window.innerWidth || posY < 0 || posY > window.innerHeight) {
+                posX = Math.random() * window.innerWidth;
+                posY = Math.random() * window.innerHeight;
+            }
+            particle.style.left = posX + 'px';
+            particle.style.top = posY + 'px';
+            requestAnimationFrame(update);
+        }
+        update();
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        document.querySelectorAll('.particle').forEach((particle) => {
+            const px = parseInt(particle.style.left);
+            const py = parseInt(particle.style.top);
+            const dx = mouseX - px;
+            const dy = mouseY - py;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 100) {
+                const angle = Math.atan2(dy, dx);
+                particle.style.left = (px - Math.cos(angle) * 15) + 'px';
+                particle.style.top = (py - Math.sin(angle) * 15) + 'px';
+            }
+        });
+    });
+
+    // Beat playback simulation
+    let playing = false;
+    let beatInterval = null;
+    let currentBeat = 0;
+
+    const beatSequence = [
+        { kick: 'k1', snare: null },
+        { kick: null, snare: 's2' },
+        { kick: 'k3', snare: null },
+        { kick: null, snare: 's4' },
+    ];
+
+    function pulseCell(id) {
+        if (!id) return;
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('pulse');
+        void el.offsetWidth;
+        el.classList.add('pulse');
+        setTimeout(() => el.classList.remove('pulse'), 200);
+    }
+
+    function runBeat() {
+        const beat = beatSequence[currentBeat % 4];
+        pulseCell(beat.kick);
+        pulseCell(beat.snare);
+        currentBeat++;
+    }
+
+    function togglePlay() {
+        const btn = document.getElementById('playBtn');
+        if (playing) {
+            clearInterval(beatInterval);
+            playing = false;
+            btn.textContent = '▶ Play Beat';
+            btn.classList.remove('playing');
+        } else {
+            playing = true;
+            btn.textContent = '⏹ Stop';
+            btn.classList.add('playing');
+            runBeat();
+            beatInterval = setInterval(runBeat, 500);
+        }
+    }
+</script>
+<small>*the CSS for this was made via Claude™. All information present was made by Azizur. </small>
+</body>
+</html>
